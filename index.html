@@ -67,7 +67,7 @@
                 <div class="flex items-center justify-between md:justify-end gap-3 flex-wrap">
                     
                     <!-- Theme Toggle Switch -->
-                    <button id="themeToggleBtn" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-700 transition text-xs font-medium" title="Toggle Theme">
+                    <button id="themeToggleBtn" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-700 transition text-xs font-medium cursor-pointer" title="Toggle Theme">
                         <i data-lucide="sun" class="w-4 h-4 text-amber-400 hidden dark:block"></i>
                         <i data-lucide="moon" class="w-4 h-4 text-indigo-400 block dark:hidden"></i>
                         <span id="themeText" class="hidden sm:inline">Theme</span>
@@ -80,12 +80,15 @@
 
                     <!-- Date Navigation Controls -->
                     <div class="flex items-center space-x-1.5 bg-slate-800 p-1 rounded-lg border border-slate-700">
-                        <button id="prevDayBtn" class="p-1.5 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition" title="Previous Day">
+                        <button id="prevDayBtn" class="p-1.5 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition cursor-pointer" title="Previous Day">
                             <i data-lucide="chevron-left" class="w-4 h-4"></i>
                         </button>
                         <input type="date" id="topDatePicker" class="bg-slate-900 text-white text-xs px-2 py-1 rounded border border-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer">
-                        <button id="todayBtn" class="text-xs font-semibold px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded transition shadow-sm">Today</button>
-                        <button id="nextDayBtn" class="p-1.5 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition" title="Next Day">
+                        <button id="openCalendarModalBtn" class="p-1.5 hover:bg-slate-700 rounded text-indigo-400 hover:text-indigo-300 transition cursor-pointer" title="Open Month Calendar Picker">
+                            <i data-lucide="calendar" class="w-4 h-4"></i>
+                        </button>
+                        <button id="todayBtn" class="text-xs font-semibold px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded transition shadow-sm cursor-pointer">Today</button>
+                        <button id="nextDayBtn" class="p-1.5 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition cursor-pointer" title="Next Day">
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -102,19 +105,19 @@
     <!-- NAVIGATION TABS -->
     <nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-[125px] md:top-[95px] z-40 shadow-sm transition-colors">
         <div class="max-w-7xl mx-auto px-4 flex space-x-2 overflow-x-auto py-1.5">
-            <button class="nav-tab active text-indigo-600 dark:text-indigo-400 border-indigo-600 dark:border-indigo-400 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="routineTab">
+            <button class="nav-tab active text-indigo-600 dark:text-indigo-400 border-indigo-600 dark:border-indigo-400 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer" data-target="routineTab">
                 <i data-lucide="check-square" class="w-4 h-4"></i> Daily Blueprint
             </button>
-            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="studyTab">
+            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer" data-target="studyTab">
                 <i data-lucide="book-open" class="w-4 h-4"></i> Study Topics
             </button>
-            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="financeTab">
+            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer" data-target="financeTab">
                 <i data-lucide="wallet" class="w-4 h-4"></i> Financial Ledger
             </button>
-            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="healthTab">
+            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer" data-target="healthTab">
                 <i data-lucide="activity" class="w-4 h-4"></i> Health & Fitness
             </button>
-            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="reflectionTab">
+            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer" data-target="reflectionTab">
                 <i data-lucide="book-marked" class="w-4 h-4"></i> Screen & Reflection
             </button>
         </div>
@@ -137,7 +140,7 @@
                     <p id="adhocNoteText" class="text-xs text-amber-800 dark:text-amber-300/80 mt-0.5"></p>
                 </div>
             </div>
-            <button id="removeAdhocBtn" class="text-xs bg-amber-200 dark:bg-amber-900 hover:bg-amber-300 text-amber-900 dark:text-amber-100 font-medium px-3.5 py-2 rounded-xl transition self-start md:self-auto shadow-sm">
+            <button id="removeAdhocBtn" class="text-xs bg-amber-200 dark:bg-amber-900 hover:bg-amber-300 text-amber-900 dark:text-amber-100 font-medium px-3.5 py-2 rounded-xl transition self-start md:self-auto shadow-sm cursor-pointer">
                 Clear Event
             </button>
         </div>
@@ -153,14 +156,14 @@
                             <h2 id="routineDayTitle" class="text-lg font-bold text-slate-900 dark:text-white">Today's Schedule</h2>
                             <span id="dayTypeBadge" class="text-xs px-3 py-1 rounded-full font-semibold bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">Weekday</span>
                         </div>
-                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Select dates from the calendar top bar to view or log routines.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Select dates from the calendar top bar or picker to view or log routines.</p>
                     </div>
 
                     <div class="flex items-center space-x-2">
-                        <button id="openAdhocModalBtn" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 transition shadow-sm">
+                        <button id="openAdhocModalBtn" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 transition shadow-sm cursor-pointer">
                             <i data-lucide="calendar-plus" class="w-4 h-4 text-indigo-500"></i> Add Ad-Hoc Plan
                         </button>
-                        <button id="resetDayRoutineBtn" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Reset all checkboxes for selected day">
+                        <button id="resetDayRoutineBtn" class="text-xs text-slate-400 dark:text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer" title="Reset all checkboxes for selected day">
                             <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -219,7 +222,7 @@
                             <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Duration (minutes)</label>
                             <input type="number" id="studyDuration" placeholder="e.g. 60" min="5" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
                         </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2 cursor-pointer">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i> Add to Study Log
                         </button>
                     </form>
@@ -275,7 +278,7 @@
                                 <option value="Shopping & Miscellaneous">Shopping & Miscellaneous</option>
                             </select>
                         </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2 cursor-pointer">
                             <i data-lucide="save" class="w-4 h-4"></i> Record Expense
                         </button>
                     </form>
@@ -354,7 +357,7 @@
                             <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Apple Watch Active Burnt (kcal)</label>
                             <input type="number" id="activeEnergy" placeholder="e.g. 450" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                         </div>
-                        <button type="submit" class="w-full bg-slate-800 dark:bg-slate-800 hover:bg-slate-900 dark:hover:bg-slate-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm">
+                        <button type="submit" class="w-full bg-slate-800 dark:bg-slate-800 hover:bg-slate-900 dark:hover:bg-slate-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm cursor-pointer">
                             Save Daily Nutrition & Energy
                         </button>
                     </form>
@@ -380,7 +383,7 @@
                             <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Weight Entry (kg)</label>
                             <input type="number" id="weightInput" step="0.1" placeholder="e.g. 62.5" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
                         </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm cursor-pointer">
                             Log Weight
                         </button>
                     </form>
@@ -414,7 +417,7 @@
                             <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Notes / Symptoms</label>
                             <input type="text" id="periodNotes" placeholder="e.g. Mild cramps, low energy" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                         </div>
-                        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm">
+                        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm cursor-pointer">
                             Log Cycle Data
                         </button>
                     </form>
@@ -460,7 +463,7 @@
                         <textarea id="gratitudeText" rows="3" placeholder="What went well today? What are you grateful for?" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2 cursor-pointer">
                         <i data-lucide="check-circle-2" class="w-4 h-4"></i> Save Journal Entry
                     </button>
                 </form>
@@ -473,6 +476,32 @@
 
     </main>
 
+    <!-- INTERACTIVE MONTH CALENDAR MODAL -->
+    <div id="calendarModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-sm w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 transition-colors space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <i data-lucide="calendar" class="w-5 h-5 text-indigo-600 dark:text-indigo-400"></i>
+                    <h3 id="calMonthYearTitle" class="text-sm font-bold text-slate-900 dark:text-white">October 2026</h3>
+                </div>
+                <div class="flex items-center space-x-1">
+                    <button id="calPrevMonth" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 cursor-pointer"><i data-lucide="chevron-left" class="w-4 h-4"></i></button>
+                    <button id="calNextMonth" class="p-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg text-slate-600 dark:text-slate-300 cursor-pointer"><i data-lucide="chevron-right" class="w-4 h-4"></i></button>
+                    <button id="closeCalendarModalBtn" class="p-1.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 ml-2 cursor-pointer"><i data-lucide="x" class="w-5 h-5"></i></button>
+                </div>
+            </div>
+
+            <!-- Days Grid Header -->
+            <div class="grid grid-cols-7 gap-1 text-center text-[11px] font-bold text-slate-400 uppercase">
+                <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+            </div>
+            <!-- Days Grid Content -->
+            <div id="calDaysGrid" class="grid grid-cols-7 gap-1 text-center text-xs">
+                <!-- Dynamically Rendered -->
+            </div>
+        </div>
+    </div>
+
     <!-- AD-HOC PLAN MODAL -->
     <div id="adhocModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
         <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 transition-colors">
@@ -483,7 +512,7 @@
                     </div>
                     Add Ad-Hoc Plan
                 </h3>
-                <button id="closeAdhocModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
+                <button id="closeAdhocModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
@@ -503,8 +532,8 @@
                 </div>
 
                 <div class="flex justify-end gap-2.5 pt-2">
-                    <button type="button" id="cancelAdhocBtn" class="px-4 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition">Cancel</button>
-                    <button type="submit" class="px-4 py-2.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-sm">Save Event</button>
+                    <button type="button" id="cancelAdhocBtn" class="px-4 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition cursor-pointer">Cancel</button>
+                    <button type="submit" class="px-4 py-2.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-sm cursor-pointer">Save Event</button>
                 </div>
             </form>
         </div>
@@ -525,6 +554,7 @@
         }
 
         let selectedDateStr = formatDateLocal(new Date());
+        let pickerModalDate = new Date();
 
         const STORAGE_KEYS = {
             ROUTINES: 'ruchira_routines_v2',
@@ -601,10 +631,10 @@
         // Theme Manager
         function initTheme() {
             const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'dark';
-            if (savedTheme === 'dark') {
-                document.documentElement.classList.add('dark');
-            } else {
+            if (savedTheme === 'light') {
                 document.documentElement.classList.remove('dark');
+            } else {
+                document.documentElement.classList.add('dark');
             }
         }
 
@@ -622,7 +652,7 @@
             renderHealthData();
             renderReflectionData();
 
-            // Theme toggle listener
+            // Theme toggle listener (Fixed)
             document.getElementById('themeToggleBtn').addEventListener('click', () => {
                 if (document.documentElement.classList.contains('dark')) {
                     document.documentElement.classList.remove('dark');
@@ -631,6 +661,25 @@
                     document.documentElement.classList.add('dark');
                     localStorage.setItem(STORAGE_KEYS.THEME, 'dark');
                 }
+                lucide.createIcons();
+            });
+
+            // Month Calendar Modal Handlers
+            document.getElementById('openCalendarModalBtn').addEventListener('click', () => {
+                pickerModalDate = parseDateLocal(selectedDateStr);
+                renderCalendarModalGrid();
+                document.getElementById('calendarModal').classList.remove('hidden');
+            });
+            document.getElementById('closeCalendarModalBtn').addEventListener('click', () => {
+                document.getElementById('calendarModal').classList.add('hidden');
+            });
+            document.getElementById('calPrevMonth').addEventListener('click', () => {
+                pickerModalDate.setMonth(pickerModalDate.getMonth() - 1);
+                renderCalendarModalGrid();
+            });
+            document.getElementById('calNextMonth').addEventListener('click', () => {
+                pickerModalDate.setMonth(pickerModalDate.getMonth() + 1);
+                renderCalendarModalGrid();
             });
 
             document.querySelectorAll('.nav-tab').forEach(tab => {
@@ -703,6 +752,50 @@
             renderCurrentDateView();
         }
 
+        function renderCalendarModalGrid() {
+            const year = pickerModalDate.getFullYear();
+            const month = pickerModalDate.getMonth();
+            
+            document.getElementById('calMonthYearTitle.innerText') || (document.getElementById('calMonthYearTitle').innerText = new Date(year, month, 1).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }));
+
+            const grid = document.getElementById('calDaysGrid');
+            grid.innerHTML = '';
+
+            const firstDayIndex = new Date(year, month, 1).getDay();
+            const totalDays = new Date(year, month + 1, 0).getDate();
+
+            // Empty cells for prior days
+            for (let i = 0; i < firstDayIndex; i++) {
+                const empty = document.createElement('div');
+                grid.appendChild(empty);
+            }
+
+            for (let day = 1; day <= totalDays; day++) {
+                const dateObj = new Date(year, month, day);
+                const dateIso = formatDateLocal(dateObj);
+                const isSelected = (dateIso === selectedDateStr);
+                const isToday = (dateIso === formatDateLocal(new Date()));
+
+                const btn = document.createElement('button');
+                btn.className = `p-2 rounded-xl text-xs font-semibold transition cursor-pointer ${
+                    isSelected 
+                        ? 'bg-indigo-600 text-white font-bold shadow' 
+                        : isToday 
+                            ? 'border border-indigo-500 text-indigo-500 dark:text-indigo-400' 
+                            : 'hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-300'
+                }`;
+                btn.innerText = day;
+                btn.onclick = () => {
+                    selectedDateStr = dateIso;
+                    document.getElementById('topDatePicker').value = selectedDateStr;
+                    document.getElementById('calendarModal').classList.add('hidden');
+                    renderTopCalendarStrip();
+                    renderCurrentDateView();
+                };
+                grid.appendChild(btn);
+            }
+        }
+
         function renderTopCalendarStrip() {
             const strip = document.getElementById('calendarStrip');
             strip.innerHTML = '';
@@ -719,7 +812,7 @@
                 const hasAdhoc = !!adhocEvents[dateIso];
 
                 const btn = document.createElement('button');
-                btn.className = `flex flex-col items-center justify-center p-2.5 rounded-xl min-w-[54px] transition text-xs shadow-sm ${
+                btn.className = `flex flex-col items-center justify-center p-2.5 rounded-xl min-w-[54px] transition text-xs shadow-sm cursor-pointer ${
                     isSelected 
                         ? 'bg-indigo-600 text-white font-bold shadow-indigo-500/20 shadow-md' 
                         : 'bg-slate-800 dark:bg-slate-800/80 text-slate-300 hover:bg-slate-700'
@@ -885,7 +978,7 @@
                         <p class="text-slate-600 dark:text-slate-300">${log.topic}</p>
                         <span class="text-[10px] text-slate-400 mt-1.5 block">${log.date}</span>
                     </div>
-                    <button onclick="deleteStudyLog('${log.id}')" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                    <button onclick="deleteStudyLog('${log.id}')" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition cursor-pointer">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 `;
@@ -941,7 +1034,7 @@
                     <td class="px-4 py-3 text-slate-500 dark:text-slate-400">${exp.category}</td>
                     <td class="px-4 py-3 text-right font-bold text-slate-800 dark:text-slate-100">₹${exp.amount.toFixed(2)}</td>
                     <td class="px-4 py-3 text-center">
-                        <button onclick="deleteExpense('${exp.id}')" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition">
+                        <button onclick="deleteExpense('${exp.id}')" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition cursor-pointer">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                         </button>
                     </td>
