@@ -91,6 +91,9 @@
             <button type="button" onclick="switchTab('studyTab', this)" class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer">
                 <i data-lucide="book-open" class="w-4 h-4"></i> Study Topics
             </button>
+            <button type="button" onclick="switchTab('booksTab', this)" class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer">
+                <i data-lucide="library" class="w-4 h-4"></i> Book Library
+            </button>
             <button type="button" onclick="switchTab('financeTab', this)" class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors cursor-pointer">
                 <i data-lucide="wallet" class="w-4 h-4"></i> Financial Ledger
             </button>
@@ -199,7 +202,62 @@
             </div>
         </section>
 
-        <!-- TAB 3: FINANCIAL LEDGER -->
+        <!-- TAB 3: BOOK LIBRARY -->
+        <section id="booksTab" class="tab-content hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Add Book Form -->
+                <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors h-fit">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4">📖 Add to Reading List</h2>
+                    <form onsubmit="handleBookSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Book Title</label>
+                            <input type="text" id="bookTitleInput" placeholder="e.g. Atomic Habits" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Author</label>
+                            <input type="text" id="bookAuthorInput" placeholder="e.g. James Clear" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Status</label>
+                            <select id="bookStatusInput" onchange="toggleInitialSummaryBox(this.value)" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
+                                <option value="In Progress">In Progress</option>
+                                <option value="Completed">Completed</option>
+                            </select>
+                        </div>
+                        <div id="initialSummaryWrapper" class="hidden">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Book Summary / Takeaways</label>
+                            <textarea id="bookInitialSummaryInput" rows="3" placeholder="Key takeaways, favorite quotes, or thoughts..." class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm cursor-pointer">Add Book</button>
+                    </form>
+                </div>
+
+                <!-- Book Shelf & Summaries -->
+                <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col transition-colors">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5 border-b border-slate-100 dark:border-slate-800 pb-4">
+                        <div>
+                            <h2 class="text-base font-bold text-slate-900 dark:text-white">My Book Shelf</h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Track books you're reading and archive your summaries.</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span id="booksInProgressCount" class="text-xs bg-amber-50 dark:bg-amber-950/80 text-amber-700 dark:text-amber-300 font-bold px-3 py-1.5 rounded-xl border border-amber-200 dark:border-amber-900">0 Reading</span>
+                            <span id="booksCompletedCount" class="text-xs bg-emerald-50 dark:bg-emerald-950/80 text-emerald-700 dark:text-emerald-300 font-bold px-3 py-1.5 rounded-xl border border-emerald-200 dark:border-emerald-900">0 Completed</span>
+                        </div>
+                    </div>
+
+                    <!-- Filter Buttons -->
+                    <div class="flex space-x-2 mb-4">
+                        <button type="button" onclick="setBookFilter('ALL')" id="filterAllBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-600 text-white cursor-pointer transition">All</button>
+                        <button type="button" onclick="setBookFilter('In Progress')" id="filterReadingBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer transition">In Progress</button>
+                        <button type="button" onclick="setBookFilter('Completed')" id="filterCompletedBtn" class="text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer transition">Completed</button>
+                    </div>
+
+                    <div id="booksListContainer" class="flex-1 overflow-y-auto space-y-4 max-h-[500px]"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: FINANCIAL LEDGER -->
         <section id="financeTab" class="tab-content hidden space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
@@ -253,7 +311,7 @@
             </div>
         </section>
 
-        <!-- TAB 4: HEALTH & FITNESS -->
+        <!-- TAB 5: HEALTH & FITNESS -->
         <section id="healthTab" class="tab-content hidden space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
@@ -317,7 +375,7 @@
             </div>
         </section>
 
-        <!-- TAB 5: REFLECTION -->
+        <!-- TAB 6: REFLECTION -->
         <section id="reflectionTab" class="tab-content hidden space-y-6">
             <div class="max-w-2xl mx-auto bg-white dark:bg-slate-900 p-6 md:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5 transition-colors">
                 <div>
@@ -345,6 +403,30 @@
             </div>
         </section>
     </main>
+
+    <!-- BOOK SUMMARY / COMPLETION MODAL -->
+    <div id="bookSummaryModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 transition-colors space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                <div>
+                    <h3 id="summaryModalBookTitle" class="text-sm font-bold text-slate-900 dark:text-white">Complete Book & Write Summary</h3>
+                    <p class="text-[11px] text-slate-400">Record your key takeaways, favorite quotes, or review.</p>
+                </div>
+                <button type="button" onclick="closeBookSummaryModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1 cursor-pointer font-bold">✕</button>
+            </div>
+            <form onsubmit="handleBookSummarySave(event)" class="space-y-4">
+                <input type="hidden" id="summaryModalBookId">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Book Summary & Notes</label>
+                    <textarea id="summaryModalText" rows="5" placeholder="Write what you learned from this book..." class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeBookSummaryModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 rounded-xl transition cursor-pointer">Cancel</button>
+                    <button type="submit" class="px-4 py-2 text-xs font-semibold text-white bg-emerald-600 hover:bg-emerald-700 rounded-xl transition shadow-sm cursor-pointer">Mark Completed & Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- INTERACTIVE MONTH CALENDAR MODAL -->
     <div id="calendarModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
@@ -405,10 +487,12 @@
 
         let selectedDateStr = formatDateLocal(new Date());
         let pickerModalDate = new Date();
+        let currentBookFilter = 'ALL';
 
         const STORAGE_KEYS = {
             ROUTINES: 'ruchira_routines_v2',
             STUDY: 'ruchira_study_v2',
+            BOOKS: 'ruchira_books_v2',
             EXPENSES: 'ruchira_expenses_v2',
             HEALTH: 'ruchira_health_v2',
             REFLECTIONS: 'ruchira_reflections_v2',
@@ -427,6 +511,7 @@
 
         let routineData = safeLoad(STORAGE_KEYS.ROUTINES, {});
         let studyLogs = safeLoad(STORAGE_KEYS.STUDY, []);
+        let bookLogs = safeLoad(STORAGE_KEYS.BOOKS, []);
         let expenseLogs = safeLoad(STORAGE_KEYS.EXPENSES, []);
         let healthData = safeLoad(STORAGE_KEYS.HEALTH, {});
         let reflectionLogs = safeLoad(STORAGE_KEYS.REFLECTIONS, {});
@@ -483,11 +568,11 @@
         function saveRoutines() { localStorage.setItem(STORAGE_KEYS.ROUTINES, JSON.stringify(routineData)); }
         function saveExpenses() { localStorage.setItem(STORAGE_KEYS.EXPENSES, JSON.stringify(expenseLogs)); }
         function saveStudy() { localStorage.setItem(STORAGE_KEYS.STUDY, JSON.stringify(studyLogs)); }
+        function saveBooks() { localStorage.setItem(STORAGE_KEYS.BOOKS, JSON.stringify(bookLogs)); }
         function saveHealth() { localStorage.setItem(STORAGE_KEYS.HEALTH, JSON.stringify(healthData)); }
         function saveReflections() { localStorage.setItem(STORAGE_KEYS.REFLECTIONS, JSON.stringify(reflectionLogs)); }
         function saveAdhoc() { localStorage.setItem(STORAGE_KEYS.ADHOC, JSON.stringify(adhocEvents)); }
 
-        // Direct global functions for HTML onclick handlers
         function toggleTheme() {
             const root = document.documentElement;
             if (root.classList.contains('dark')) {
@@ -582,6 +667,154 @@
             routineData[selectedDateStr] = currentList;
             saveRoutines();
             renderCurrentDateView();
+        }
+
+        // BOOK LIBRARY HANDLERS
+        function toggleInitialSummaryBox(status) {
+            const wrapper = document.getElementById('initialSummaryWrapper');
+            if (status === 'Completed') {
+                wrapper.classList.remove('hidden');
+            } else {
+                wrapper.classList.add('hidden');
+            }
+        }
+
+        function handleBookSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('bookTitleInput').value.trim();
+            const author = document.getElementById('bookAuthorInput').value.trim();
+            const status = document.getElementById('bookStatusInput').value;
+            const summary = status === 'Completed' ? document.getElementById('bookInitialSummaryInput').value.trim() : '';
+
+            bookLogs.unshift({
+                id: Date.now().toString(),
+                title,
+                author,
+                status,
+                summary,
+                addedDate: selectedDateStr,
+                completedDate: status === 'Completed' ? selectedDateStr : null
+            });
+
+            saveBooks();
+            document.getElementById('bookTitleInput').value = '';
+            document.getElementById('bookAuthorInput').value = '';
+            document.getElementById('bookStatusInput').value = 'In Progress';
+            document.getElementById('bookInitialSummaryInput').value = '';
+            toggleInitialSummaryBox('In Progress');
+            renderBooks();
+        }
+
+        function setBookFilter(filter) {
+            currentBookFilter = filter;
+            const allBtn = document.getElementById('filterAllBtn');
+            const readBtn = document.getElementById('filterReadingBtn');
+            const compBtn = document.getElementById('filterCompletedBtn');
+
+            [allBtn, readBtn, compBtn].forEach(b => {
+                b.className = 'text-xs font-semibold px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 cursor-pointer transition';
+            });
+
+            const activeBtn = filter === 'ALL' ? allBtn : (filter === 'In Progress' ? readBtn : compBtn);
+            activeBtn.className = 'text-xs font-semibold px-3 py-1.5 rounded-lg bg-indigo-600 text-white cursor-pointer transition';
+
+            renderBooks();
+        }
+
+        function openBookSummaryModal(bookId) {
+            const book = bookLogs.find(b => b.id === bookId);
+            if (!book) return;
+            document.getElementById('summaryModalBookId').value = book.id;
+            document.getElementById('summaryModalBookTitle').innerText = `${book.title} — Summary & Notes`;
+            document.getElementById('summaryModalText').value = book.summary || '';
+            document.getElementById('bookSummaryModal').classList.remove('hidden');
+        }
+
+        function closeBookSummaryModal() {
+            document.getElementById('bookSummaryModal').classList.add('hidden');
+        }
+
+        function handleBookSummarySave(e) {
+            e.preventDefault();
+            const bookId = document.getElementById('summaryModalBookId').value;
+            const summaryText = document.getElementById('summaryModalText').value.trim();
+
+            const book = bookLogs.find(b => b.id === bookId);
+            if (book) {
+                book.status = 'Completed';
+                book.summary = summaryText;
+                if (!book.completedDate) book.completedDate = selectedDateStr;
+                saveBooks();
+                renderBooks();
+            }
+            closeBookSummaryModal();
+        }
+
+        function deleteBook(id) {
+            bookLogs = bookLogs.filter(b => b.id !== id);
+            saveBooks();
+            renderBooks();
+        }
+
+        function renderBooks() {
+            const container = document.getElementById('booksListContainer');
+            container.innerHTML = '';
+
+            const inProgressCount = bookLogs.filter(b => b.status === 'In Progress').length;
+            const completedCount = bookLogs.filter(b => b.status === 'Completed').length;
+
+            document.getElementById('booksInProgressCount').innerText = `${inProgressCount} Reading`;
+            document.getElementById('booksCompletedCount').innerText = `${completedCount} Completed`;
+
+            const filtered = currentBookFilter === 'ALL' 
+                ? bookLogs 
+                : bookLogs.filter(b => b.status === currentBookFilter);
+
+            if (filtered.length === 0) {
+                container.innerHTML = '<p class="text-xs text-slate-400 italic">No books found in this view. Add a book on the left to start your reading log!</p>';
+                return;
+            }
+
+            filtered.forEach(book => {
+                const isCompleted = book.status === 'Completed';
+                const card = document.createElement('div');
+                card.className = 'p-4 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 rounded-2xl space-y-3 text-xs';
+
+                card.innerHTML = `
+                    <div class="flex items-start justify-between gap-2">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <h3 class="font-bold text-sm text-slate-900 dark:text-white">${book.title}</h3>
+                                <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                                    isCompleted 
+                                        ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 border-emerald-200 dark:border-emerald-800' 
+                                        : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 border-amber-200 dark:border-amber-800'
+                                }">${book.status}</span>
+                            </div>
+                            <p class="text-slate-500 dark:text-slate-400 mt-0.5">${book.author ? `by ${book.author}` : 'Author not specified'} • Added ${book.addedDate}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5">
+                            ${!isCompleted ? `
+                                <button type="button" onclick="openBookSummaryModal('${book.id}')" class="text-[11px] bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-3 py-1.5 rounded-xl transition cursor-pointer shadow-sm">
+                                    ✓ Mark Completed & Add Summary
+                                </button>
+                            ` : `
+                                <button type="button" onclick="openBookSummaryModal('${book.id}')" class="text-[11px] bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-semibold px-2.5 py-1.5 rounded-xl transition cursor-pointer">
+                                    ✏️ Edit Summary
+                                </button>
+                            `}
+                            <button type="button" onclick="deleteBook('${book.id}')" class="text-slate-400 hover:text-red-500 p-1.5 cursor-pointer" title="Delete Book">🗑️</button>
+                        </div>
+                    </div>
+                    ${isCompleted && book.summary ? `
+                        <div class="p-3 bg-white dark:bg-slate-900 rounded-xl border border-slate-200/70 dark:border-slate-800 text-slate-700 dark:text-slate-300 space-y-1">
+                            <span class="text-[10px] font-bold uppercase tracking-wider text-indigo-500 block">Summary & Takeaways (Completed ${book.completedDate || ''})</span>
+                            <p class="whitespace-pre-line leading-relaxed">${book.summary}</p>
+                        </div>
+                    ` : ''}
+                `;
+                container.appendChild(card);
+            });
         }
 
         function renderCalendarModalGrid() {
@@ -1010,6 +1243,7 @@
             renderTopCalendarStrip();
             renderCurrentDateView();
             renderStudyLogs();
+            renderBooks();
             renderExpenses();
             renderHealthData();
             renderReflectionData();
