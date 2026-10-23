@@ -1,11 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ruchira's Life OS & Habit Tracker</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            500: '#6366f1',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
@@ -14,27 +32,29 @@
             height: 6px;
         }
         ::-webkit-scrollbar-track {
-            background: #f1f5f9;
+            background: transparent;
         }
         ::-webkit-scrollbar-thumb {
             background: #cbd5e1;
             border-radius: 4px;
         }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #94a3b8;
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
+<body class="bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans min-h-screen flex flex-col transition-colors duration-300">
 
     <!-- TOP HEADER & DYNAMIC CALENDAR STRIP -->
-    <header class="bg-slate-900 text-white shadow-md sticky top-0 z-50">
+    <header class="bg-slate-900 dark:bg-slate-900/90 text-white shadow-lg sticky top-0 z-50 backdrop-blur-md border-b border-slate-800">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3 border-b border-slate-800 pb-3">
                 <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-2">
-                        <i data-lucide="sparkles" class="w-6 h-6 text-indigo-400"></i>
-                        <h1 class="text-xl font-bold tracking-tight">Ruchira's Life OS</h1>
+                    <div class="flex items-center space-x-2.5">
+                        <div class="p-2 bg-indigo-500/20 rounded-xl border border-indigo-500/30 text-indigo-400">
+                            <i data-lucide="sparkles" class="w-5 h-5"></i>
+                        </div>
+                        <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">Ruchira's Life OS</h1>
                     </div>
                     <div class="flex items-center space-x-2 md:hidden">
                         <span id="streakBadgeMobile" class="text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2 py-1 rounded-full font-semibold flex items-center gap-1">
@@ -43,21 +63,29 @@
                     </div>
                 </div>
 
-                <!-- Streak Shield Status & Date Picker Quick Controls -->
-                <div class="flex items-center justify-between md:justify-end gap-4">
+                <!-- Theme Toggle, Streak Shield & Date Picker Quick Controls -->
+                <div class="flex items-center justify-between md:justify-end gap-3 flex-wrap">
+                    
+                    <!-- Theme Toggle Switch -->
+                    <button id="themeToggleBtn" class="flex items-center space-x-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg border border-slate-700 transition text-xs font-medium" title="Toggle Theme">
+                        <i data-lucide="sun" class="w-4 h-4 text-amber-400 hidden dark:block"></i>
+                        <i data-lucide="moon" class="w-4 h-4 text-indigo-400 block dark:hidden"></i>
+                        <span id="themeText" class="hidden sm:inline">Theme</span>
+                    </button>
+
                     <div class="hidden md:flex items-center space-x-2 bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-700">
                         <i data-lucide="flame" class="w-4 h-4 text-amber-400 fill-amber-400"></i>
                         <span class="text-xs text-slate-300 font-medium">Streak: <strong id="streakCountText" class="text-white text-sm">0 Days</strong></span>
                     </div>
 
                     <!-- Date Navigation Controls -->
-                    <div class="flex items-center space-x-2 bg-slate-800 p-1 rounded-lg border border-slate-700">
-                        <button id="prevDayBtn" class="p-1 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition" title="Previous Day">
+                    <div class="flex items-center space-x-1.5 bg-slate-800 p-1 rounded-lg border border-slate-700">
+                        <button id="prevDayBtn" class="p-1.5 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition" title="Previous Day">
                             <i data-lucide="chevron-left" class="w-4 h-4"></i>
                         </button>
                         <input type="date" id="topDatePicker" class="bg-slate-900 text-white text-xs px-2 py-1 rounded border border-slate-700 focus:outline-none focus:border-indigo-500 cursor-pointer">
-                        <button id="todayBtn" class="text-xs font-medium px-2 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded transition">Today</button>
-                        <button id="nextDayBtn" class="p-1 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition" title="Next Day">
+                        <button id="todayBtn" class="text-xs font-semibold px-2.5 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded transition shadow-sm">Today</button>
+                        <button id="nextDayBtn" class="p-1.5 hover:bg-slate-700 rounded text-slate-300 hover:text-white transition" title="Next Day">
                             <i data-lucide="chevron-right" class="w-4 h-4"></i>
                         </button>
                     </div>
@@ -65,51 +93,51 @@
             </div>
 
             <!-- Dynamic Weekly Calendar Carousel Bar -->
-            <div class="flex items-center justify-between pt-2 overflow-x-auto no-scrollbar gap-2" id="calendarStrip">
+            <div class="flex items-center justify-between pt-2.5 overflow-x-auto no-scrollbar gap-2" id="calendarStrip">
                 <!-- Dynamically Rendered Calendar Days -->
             </div>
         </div>
     </header>
 
     <!-- NAVIGATION TABS -->
-    <nav class="bg-white border-b border-slate-200 sticky top-[115px] md:top-[85px] z-40 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 flex space-x-1 overflow-x-auto py-1">
-            <button class="nav-tab active text-indigo-600 border-indigo-600 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2" data-target="routineTab">
+    <nav class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 sticky top-[125px] md:top-[95px] z-40 shadow-sm transition-colors">
+        <div class="max-w-7xl mx-auto px-4 flex space-x-2 overflow-x-auto py-1.5">
+            <button class="nav-tab active text-indigo-600 dark:text-indigo-400 border-indigo-600 dark:border-indigo-400 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="routineTab">
                 <i data-lucide="check-square" class="w-4 h-4"></i> Daily Blueprint
             </button>
-            <button class="nav-tab text-slate-500 border-transparent hover:text-slate-800 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2" data-target="studyTab">
+            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="studyTab">
                 <i data-lucide="book-open" class="w-4 h-4"></i> Study Topics
             </button>
-            <button class="nav-tab text-slate-500 border-transparent hover:text-slate-800 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2" data-target="financeTab">
+            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="financeTab">
                 <i data-lucide="wallet" class="w-4 h-4"></i> Financial Ledger
             </button>
-            <button class="nav-tab text-slate-500 border-transparent hover:text-slate-800 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2" data-target="healthTab">
+            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="healthTab">
                 <i data-lucide="activity" class="w-4 h-4"></i> Health & Fitness
             </button>
-            <button class="nav-tab text-slate-500 border-transparent hover:text-slate-800 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2" data-target="reflectionTab">
+            <button class="nav-tab text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-800 dark:hover:text-slate-200 font-semibold px-4 py-2 border-b-2 text-sm whitespace-nowrap flex items-center gap-2 transition-colors" data-target="reflectionTab">
                 <i data-lucide="book-marked" class="w-4 h-4"></i> Screen & Reflection
             </button>
         </div>
     </nav>
 
     <!-- MAIN CONTENT AREA -->
-    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full">
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-1 w-full space-y-6">
 
         <!-- AD-HOC PLAN / STREAK FREEZE ALERT BANNER -->
-        <div id="adhocBanner" class="mb-6 bg-amber-50 border border-amber-200 rounded-xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hidden">
+        <div id="adhocBanner" class="bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-900/50 rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-3 hidden shadow-sm">
             <div class="flex items-start space-x-3">
-                <div class="p-2 bg-amber-100 rounded-lg text-amber-700">
+                <div class="p-2 bg-amber-100 dark:bg-amber-900/50 rounded-xl text-amber-700 dark:text-amber-300">
                     <i data-lucide="shield-alert" class="w-5 h-5"></i>
                 </div>
                 <div>
                     <div class="flex items-center gap-2">
-                        <span class="font-bold text-amber-900 text-sm">Ad-Hoc Event Planned</span>
-                        <span id="streakFreezeBadge" class="text-[10px] bg-indigo-100 text-indigo-700 font-semibold px-2 py-0.5 rounded-full border border-indigo-200">Streak Freeze Active</span>
+                        <span class="font-bold text-amber-900 dark:text-amber-200 text-sm">Ad-Hoc Event Planned</span>
+                        <span id="streakFreezeBadge" class="text-[10px] bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-semibold px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">Streak Freeze Active</span>
                     </div>
-                    <p id="adhocNoteText" class="text-xs text-amber-800 mt-0.5"></p>
+                    <p id="adhocNoteText" class="text-xs text-amber-800 dark:text-amber-300/80 mt-0.5"></p>
                 </div>
             </div>
-            <button id="removeAdhocBtn" class="text-xs bg-amber-200 hover:bg-amber-300 text-amber-900 font-medium px-3 py-1.5 rounded-lg transition self-start md:self-auto">
+            <button id="removeAdhocBtn" class="text-xs bg-amber-200 dark:bg-amber-900 hover:bg-amber-300 text-amber-900 dark:text-amber-100 font-medium px-3.5 py-2 rounded-xl transition self-start md:self-auto shadow-sm">
                 Clear Event
             </button>
         </div>
@@ -118,45 +146,45 @@
         <section id="routineTab" class="tab-content space-y-6">
 
             <!-- Routine Header Info & Progress Bar -->
-            <div class="bg-white rounded-xl p-5 border border-slate-200 shadow-sm">
-                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4">
+            <div class="bg-white dark:bg-slate-900 rounded-2xl p-5 md:p-6 border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
                     <div>
-                        <div class="flex items-center space-x-2">
-                            <h2 id="routineDayTitle" class="text-lg font-bold text-slate-900">Today's Schedule</h2>
-                            <span id="dayTypeBadge" class="text-xs px-2.5 py-0.5 rounded-full font-semibold bg-indigo-100 text-indigo-700">Weekday</span>
+                        <div class="flex items-center space-x-2.5">
+                            <h2 id="routineDayTitle" class="text-lg font-bold text-slate-900 dark:text-white">Today's Schedule</h2>
+                            <span id="dayTypeBadge" class="text-xs px-3 py-1 rounded-full font-semibold bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800">Weekday</span>
                         </div>
-                        <p id="selectedDateDisplay" class="text-xs text-slate-500 mt-1">Select dates from the calendar top bar to view or log past/future routines.</p>
+                        <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Select dates from the calendar top bar to view or log routines.</p>
                     </div>
 
                     <div class="flex items-center space-x-2">
-                        <button id="openAdhocModalBtn" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold px-3 py-2 rounded-lg border border-slate-300 flex items-center gap-1.5 transition">
-                            <i data-lucide="calendar-plus" class="w-4 h-4 text-slate-500"></i> Add Ad-Hoc Plan
+                        <button id="openAdhocModalBtn" class="text-xs bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 font-semibold px-3.5 py-2 rounded-xl border border-slate-300 dark:border-slate-700 flex items-center gap-1.5 transition shadow-sm">
+                            <i data-lucide="calendar-plus" class="w-4 h-4 text-indigo-500"></i> Add Ad-Hoc Plan
                         </button>
-                        <button id="resetDayRoutineBtn" class="text-xs text-slate-400 hover:text-slate-600 px-2 py-2" title="Uncheck all for selected day">
+                        <button id="resetDayRoutineBtn" class="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition" title="Reset all checkboxes for selected day">
                             <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Daily Progress Bar -->
-                <div>
-                    <div class="flex justify-between items-center text-xs font-semibold text-slate-600 mb-1.5">
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center text-xs font-semibold text-slate-600 dark:text-slate-400">
                         <span>Daily Completion</span>
-                        <span id="progressPercent">0%</span>
+                        <span id="progressPercent" class="text-indigo-600 dark:text-indigo-400 font-bold">0%</span>
                     </div>
-                    <div class="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden border border-slate-200">
-                        <div id="progressBar" class="bg-indigo-600 h-full transition-all duration-300 w-0"></div>
+                    <div class="w-full bg-slate-100 dark:bg-slate-800 h-3 rounded-full overflow-hidden border border-slate-200 dark:border-slate-700">
+                        <div id="progressBar" class="bg-indigo-600 dark:bg-indigo-500 h-full transition-all duration-500 rounded-full w-0 shadow-sm"></div>
                     </div>
                 </div>
             </div>
 
             <!-- Routine Task Items List -->
-            <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Chronological Routine</span>
-                    <span id="taskCounterText" class="text-xs font-medium text-slate-500">0 of 0 Completed</span>
+            <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+                <div class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Chronological Routine</span>
+                    <span id="taskCounterText" class="text-xs font-medium text-slate-500 dark:text-slate-400">0 of 0 Completed</span>
                 </div>
-                <div id="routineList" class="divide-y divide-slate-100">
+                <div id="routineList" class="divide-y divide-slate-100 dark:divide-slate-800/60">
                     <!-- Tasks dynamically generated -->
                 </div>
             </div>
@@ -166,14 +194,17 @@
         <section id="studyTab" class="tab-content hidden space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Log Study Form -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <i data-lucide="pen-tool" class="w-5 h-5 text-indigo-600"></i> Log Study Session
+                <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <div class="p-2 bg-indigo-50 dark:bg-indigo-950/80 rounded-xl text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900">
+                            <i data-lucide="pen-tool" class="w-4 h-4"></i>
+                        </div> 
+                        Log Study Session
                     </h2>
                     <form id="studyLogForm" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Module / Category</label>
-                            <select id="studyCategory" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Module / Category</label>
+                            <select id="studyCategory" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                                 <option value="IITM Coursework">IITM Coursework</option>
                                 <option value="Software Engineering & Code">Software Engineering & Code</option>
                                 <option value="Guitar & Classical Music">Guitar & Classical Music</option>
@@ -181,32 +212,32 @@
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Topics Completed / Covered</label>
-                            <textarea id="studyTopicDetails" rows="3" placeholder="e.g. Completed Data Structures Module 3 - Graph Algorithms" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required></textarea>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Topics Completed / Covered</label>
+                            <textarea id="studyTopicDetails" rows="3" placeholder="e.g. Completed Data Structures Module 3 - Graph Algorithms" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required></textarea>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Duration (minutes)</label>
-                            <input type="number" id="studyDuration" placeholder="e.g. 60" min="5" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Duration (minutes)</label>
+                            <input type="number" id="studyDuration" placeholder="e.g. 60" min="5" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
                         </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2.5 rounded-lg transition flex items-center justify-center gap-2">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
                             <i data-lucide="plus-circle" class="w-4 h-4"></i> Add to Study Log
                         </button>
                     </form>
                 </div>
 
                 <!-- Study Topic History & Analytics -->
-                <div class="lg:col-span-2 bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-col">
-                    <div class="flex items-center justify-between mb-4 border-b border-slate-100 pb-3">
+                <div class="lg:col-span-2 bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm flex flex-col transition-colors">
+                    <div class="flex items-center justify-between mb-4 border-b border-slate-100 dark:border-slate-800 pb-3">
                         <div>
-                            <h2 class="text-base font-bold text-slate-900">Study & Learning History</h2>
-                            <p class="text-xs text-slate-500">Track subjects and topics mastered over time.</p>
+                            <h2 class="text-base font-bold text-slate-900 dark:text-white">Study & Learning History</h2>
+                            <p class="text-xs text-slate-500 dark:text-slate-400">Track subjects and topics mastered over time.</p>
                         </div>
-                        <span id="totalStudyHours" class="text-xs bg-indigo-50 text-indigo-700 font-bold px-3 py-1 rounded-full border border-indigo-100">
+                        <span id="totalStudyHours" class="text-xs bg-indigo-50 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 font-bold px-3 py-1.5 rounded-xl border border-indigo-100 dark:border-indigo-900">
                             Total: 0 hrs
                         </span>
                     </div>
 
-                    <div id="studyLogsContainer" class="flex-1 overflow-y-auto space-y-3 max-h-[400px]">
+                    <div id="studyLogsContainer" class="flex-1 overflow-y-auto space-y-3 max-h-[420px]">
                         <!-- Rendered logs -->
                     </div>
                 </div>
@@ -217,22 +248,25 @@
         <section id="financeTab" class="tab-content hidden space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <!-- Add Expense Card -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <i data-lucide="plus-circle" class="w-5 h-5 text-emerald-600"></i> Log Expense
+                <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <div class="p-2 bg-emerald-50 dark:bg-emerald-950/80 rounded-xl text-emerald-600 dark:text-emerald-400 border border-emerald-100 dark:border-emerald-900">
+                            <i data-lucide="wallet" class="w-4 h-4"></i>
+                        </div>
+                        Log Expense
                     </h2>
                     <form id="expenseForm" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Expense Description</label>
-                            <input type="text" id="expenseDesc" placeholder="e.g. Groceries, Book, Coffee" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Expense Description</label>
+                            <input type="text" id="expenseDesc" placeholder="e.g. Groceries, Book, Coffee" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Amount (₹)</label>
-                            <input type="number" id="expenseAmount" placeholder="0.00" min="0" step="0.01" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Amount (₹)</label>
+                            <input type="number" id="expenseAmount" placeholder="0.00" min="0" step="0.01" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Category</label>
-                            <select id="expenseCategory" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Category</label>
+                            <select id="expenseCategory" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                                 <option value="Food & Dining">Food & Dining</option>
                                 <option value="Transport & Fuel">Transport & Fuel</option>
                                 <option value="Education & Books">Education & Books</option>
@@ -241,7 +275,7 @@
                                 <option value="Shopping & Miscellaneous">Shopping & Miscellaneous</option>
                             </select>
                         </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-2.5 rounded-lg transition flex items-center justify-center gap-2">
+                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
                             <i data-lucide="save" class="w-4 h-4"></i> Record Expense
                         </button>
                     </form>
@@ -249,40 +283,40 @@
 
                 <!-- Financial Insights & Monthly Stats -->
                 <div class="lg:col-span-2 space-y-4">
-                    <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                        <div class="flex items-center justify-between border-b border-slate-100 pb-3 mb-3">
-                            <h2 class="text-base font-bold text-slate-900">Spending Overview</h2>
-                            <span id="currentMonthSpendText" class="text-sm font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-100">
+                    <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
+                        <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3 mb-4">
+                            <h2 class="text-base font-bold text-slate-900 dark:text-white">Spending Overview</h2>
+                            <span id="currentMonthSpendText" class="text-sm font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/80 px-3 py-1.5 rounded-xl border border-emerald-100 dark:border-emerald-900">
                                 Month Total: ₹0
                             </span>
                         </div>
 
                         <!-- Suggestions Box -->
-                        <div id="spendingInsightsBox" class="bg-indigo-50/50 border border-indigo-100 rounded-xl p-4 text-xs text-indigo-900 space-y-1">
-                            <div class="flex items-center gap-2 font-bold text-indigo-950">
+                        <div id="spendingInsightsBox" class="bg-indigo-50/60 dark:bg-indigo-950/40 border border-indigo-100 dark:border-indigo-900/60 rounded-2xl p-4 text-xs text-indigo-900 dark:text-indigo-200 space-y-1.5">
+                            <div class="flex items-center gap-2 font-bold text-indigo-950 dark:text-indigo-100">
                                 <i data-lucide="lightbulb" class="w-4 h-4 text-amber-500"></i> Smart Financial Insight
                             </div>
-                            <p id="spendingInsightText" class="text-slate-600">No expense records logged yet for this month. Start logging to unlock spend suggestions.</p>
+                            <p id="spendingInsightText" class="text-slate-600 dark:text-slate-300">No expense records logged yet for this month. Start logging to unlock spend suggestions.</p>
                         </div>
                     </div>
 
                     <!-- Expense Table -->
-                    <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                        <div class="p-4 border-b border-slate-100 bg-slate-50 flex items-center justify-between">
-                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Expense Log History</span>
+                    <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm overflow-hidden transition-colors">
+                        <div class="p-4 border-b border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-900/50 flex items-center justify-between">
+                            <span class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Expense Log History</span>
                         </div>
-                        <div class="overflow-x-auto max-h-[300px]">
-                            <table class="w-full text-left text-xs text-slate-600">
-                                <thead class="bg-slate-50 text-slate-500 uppercase border-b border-slate-200">
+                        <div class="overflow-x-auto max-h-[260px]">
+                            <table class="w-full text-left text-xs text-slate-600 dark:text-slate-300">
+                                <thead class="bg-slate-50 dark:bg-slate-800/80 text-slate-500 dark:text-slate-400 uppercase border-b border-slate-200 dark:border-slate-800 sticky top-0">
                                     <tr>
-                                        <th class="px-4 py-2">Date</th>
-                                        <th class="px-4 py-2">Description</th>
-                                        <th class="px-4 py-2">Category</th>
-                                        <th class="px-4 py-2 text-right">Amount</th>
-                                        <th class="px-4 py-2 text-center">Action</th>
+                                        <th class="px-4 py-2.5">Date</th>
+                                        <th class="px-4 py-2.5">Description</th>
+                                        <th class="px-4 py-2.5">Category</th>
+                                        <th class="px-4 py-2.5 text-right">Amount</th>
+                                        <th class="px-4 py-2.5 text-center">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody id="expenseTableBody" class="divide-y divide-slate-100">
+                                <tbody id="expenseTableBody" class="divide-y divide-slate-100 dark:divide-slate-800/60">
                                     <!-- Dynamic Rows -->
                                 </tbody>
                             </table>
@@ -297,56 +331,62 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
                 <!-- 1. Daily Calories & Apple Watch Active Energy -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+                <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                            <i data-lucide="flame" class="w-5 h-5 text-amber-500"></i> Calorie & Energy
+                        <h2 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <div class="p-2 bg-amber-50 dark:bg-amber-950/80 rounded-xl text-amber-500 border border-amber-100 dark:border-amber-900">
+                                <i data-lucide="flame" class="w-4 h-4"></i>
+                            </div>
+                            Calorie & Energy
                         </h2>
-                        <span id="calorieAlertBadge" class="hidden text-[10px] bg-red-100 text-red-700 font-bold px-2 py-0.5 rounded border border-red-200 flex items-center gap-1">
+                        <span id="calorieAlertBadge" class="hidden text-[10px] bg-red-100 dark:bg-red-950/80 text-red-700 dark:text-red-300 font-bold px-2 py-0.5 rounded-lg border border-red-200 dark:border-red-900 flex items-center gap-1">
                             <i data-lucide="alert-triangle" class="w-3 h-3"></i> > 1800 kcal
                         </span>
                     </div>
 
                     <form id="calorieEnergyForm" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Daily Food Intake (kcal)</label>
-                            <input type="number" id="intakeCalories" placeholder="e.g. 1650" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Daily Food Intake (kcal)</label>
+                            <input type="number" id="intakeCalories" placeholder="e.g. 1650" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                             <p class="text-[10px] text-slate-400 mt-1">Target threshold: ≤ 1800 kcal/day</p>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Apple Watch Active Burnt (kcal)</label>
-                            <input type="number" id="activeEnergy" placeholder="e.g. 450" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Apple Watch Active Burnt (kcal)</label>
+                            <input type="number" id="activeEnergy" placeholder="e.g. 450" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                         </div>
-                        <button type="submit" class="w-full bg-slate-800 hover:bg-slate-900 text-white font-semibold text-xs py-2.5 rounded-lg transition">
+                        <button type="submit" class="w-full bg-slate-800 dark:bg-slate-800 hover:bg-slate-900 dark:hover:bg-slate-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm">
                             Save Daily Nutrition & Energy
                         </button>
                     </form>
 
-                    <div id="netEnergyDisplay" class="mt-4 p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs space-y-1 hidden">
+                    <div id="netEnergyDisplay" class="mt-4 p-3.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 rounded-xl text-xs space-y-1 hidden">
                         <div class="flex justify-between font-semibold">
-                            <span>Net Caloric Surplus / Deficit:</span>
-                            <span id="netCalorieValue" class="text-indigo-600">0 kcal</span>
+                            <span class="text-slate-600 dark:text-slate-300">Net Caloric Balance:</span>
+                            <span id="netCalorieValue" class="text-indigo-600 dark:text-indigo-400">0 kcal</span>
                         </div>
                     </div>
                 </div>
 
                 <!-- 2. Weight Logging -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <i data-lucide="scale" class="w-5 h-5 text-indigo-600"></i> Weight Tracking
+                <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <div class="p-2 bg-indigo-50 dark:bg-indigo-950/80 rounded-xl text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900">
+                            <i data-lucide="scale" class="w-4 h-4"></i>
+                        </div>
+                        Weight Tracking
                     </h2>
                     <form id="weightForm" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Weight Entry (kg)</label>
-                            <input type="number" id="weightInput" step="0.1" placeholder="e.g. 62.5" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Weight Entry (kg)</label>
+                            <input type="number" id="weightInput" step="0.1" placeholder="e.g. 62.5" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
                         </div>
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2.5 rounded-lg transition">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm">
                             Log Weight
                         </button>
                     </form>
 
-                    <div class="mt-5 border-t border-slate-100 pt-3">
-                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Recent Weight History</span>
+                    <div class="mt-5 border-t border-slate-100 dark:border-slate-800 pt-4">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2">Recent Weight History</span>
                         <div id="weightHistoryList" class="space-y-2 max-h-[160px] overflow-y-auto text-xs">
                             <p class="text-slate-400 italic">No weight entries logged yet.</p>
                         </div>
@@ -354,30 +394,33 @@
                 </div>
 
                 <!-- 3. Period & Cycle Tracking -->
-                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
-                    <h2 class="text-base font-bold text-slate-900 mb-4 flex items-center gap-2">
-                        <i data-lucide="heart-pulse" class="w-5 h-5 text-rose-500"></i> Cycle & Period Tracker
+                <div class="bg-white dark:bg-slate-900 p-5 md:p-6 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm transition-colors">
+                    <h2 class="text-base font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
+                        <div class="p-2 bg-rose-50 dark:bg-rose-950/80 rounded-xl text-rose-500 border border-rose-100 dark:border-rose-900">
+                            <i data-lucide="heart-pulse" class="w-4 h-4"></i>
+                        </div>
+                        Cycle & Period Tracker
                     </h2>
                     <form id="periodForm" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Cycle Phase / Start</label>
-                            <select id="periodStatus" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Cycle Phase / Start</label>
+                            <select id="periodStatus" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                                 <option value="Period Started">Period Started</option>
                                 <option value="Period Ended">Period Ended</option>
                                 <option value="Spotting / Mild">Spotting / Mild</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Notes / Symptoms</label>
-                            <input type="text" id="periodNotes" placeholder="e.g. Mild cramps, low energy" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Notes / Symptoms</label>
+                            <input type="text" id="periodNotes" placeholder="e.g. Mild cramps, low energy" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                         </div>
-                        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs py-2.5 rounded-lg transition">
+                        <button type="submit" class="w-full bg-rose-600 hover:bg-rose-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm">
                             Log Cycle Data
                         </button>
                     </form>
 
-                    <div class="mt-5 border-t border-slate-100 pt-3">
-                        <span class="text-xs font-bold text-slate-500 uppercase tracking-wider block mb-2">Cycle Log</span>
+                    <div class="mt-5 border-t border-slate-100 dark:border-slate-800 pt-4">
+                        <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider block mb-2">Cycle Log</span>
                         <div id="periodHistoryList" class="space-y-2 max-h-[160px] overflow-y-auto text-xs">
                             <p class="text-slate-400 italic">No cycle entries logged yet.</p>
                         </div>
@@ -389,38 +432,41 @@
 
         <!-- TAB 5: SCREEN TIME & EVENING REFLECTION -->
         <section id="reflectionTab" class="tab-content hidden space-y-6">
-            <div class="max-w-2xl mx-auto bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-5">
+            <div class="max-w-2xl mx-auto bg-white dark:bg-slate-900 p-6 md:p-8 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm space-y-5 transition-colors">
                 <div>
-                    <h2 class="text-lg font-bold text-slate-900 flex items-center gap-2">
-                        <i data-lucide="smartphone" class="w-5 h-5 text-indigo-600"></i> Evening Reflection & Screen Time
+                    <h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                        <div class="p-2 bg-indigo-50 dark:bg-indigo-950/80 rounded-xl text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900">
+                            <i data-lucide="smartphone" class="w-5 h-5"></i>
+                        </div>
+                        Evening Reflection & Screen Time
                     </h2>
-                    <p class="text-xs text-slate-500 mt-0.5">Evaluated as part of your evening journalling routine.</p>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 mt-1">Evaluated as part of your evening journalling routine.</p>
                 </div>
 
                 <form id="reflectionForm" class="space-y-4">
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Screen Time (Hours)</label>
-                            <input type="number" id="screenHours" step="0.1" placeholder="e.g. 3.5" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Screen Time (Hours)</label>
+                            <input type="number" id="screenHours" step="0.1" placeholder="e.g. 3.5" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
                         </div>
                         <div>
-                            <label class="block text-xs font-semibold text-slate-600 mb-1">Pickups Count</label>
-                            <input type="number" id="screenPickups" placeholder="e.g. 45" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Pickups Count</label>
+                            <input type="number" id="screenPickups" placeholder="e.g. 45" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition">
                         </div>
                     </div>
 
                     <div>
-                        <label class="block text-xs font-semibold text-slate-600 mb-1">Gratitude & Mood Notes</label>
-                        <textarea id="gratitudeText" rows="3" placeholder="What went well today? What are you grateful for?" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"></textarea>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Gratitude & Mood Notes</label>
+                        <textarea id="gratitudeText" rows="3" placeholder="What went well today? What are you grateful for?" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition"></textarea>
                     </div>
 
-                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2.5 rounded-lg transition flex items-center justify-center gap-2">
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-3 rounded-xl transition shadow-sm flex items-center justify-center gap-2">
                         <i data-lucide="check-circle-2" class="w-4 h-4"></i> Save Journal Entry
                     </button>
                 </form>
 
-                <div id="savedReflectionNotice" class="hidden p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-xs text-emerald-800 flex items-center gap-2">
-                    <i data-lucide="check" class="w-4 h-4 text-emerald-600"></i> Journal and Screen Time logged for this date.
+                <div id="savedReflectionNotice" class="hidden p-3.5 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-900/60 rounded-xl text-xs text-emerald-800 dark:text-emerald-300 flex items-center gap-2">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 dark:text-emerald-400"></i> Journal and Screen Time logged for this date.
                 </div>
             </div>
         </section>
@@ -428,34 +474,37 @@
     </main>
 
     <!-- AD-HOC PLAN MODAL -->
-    <div id="adhocModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
-        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
+    <div id="adhocModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-800 transition-colors">
             <div class="flex items-center justify-between mb-4">
-                <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
-                    <i data-lucide="calendar-plus" class="w-5 h-5 text-indigo-600"></i> Add Ad-Hoc Plan
+                <h3 class="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <div class="p-2 bg-indigo-50 dark:bg-indigo-950/80 rounded-xl text-indigo-600 dark:text-indigo-400 border border-indigo-100 dark:border-indigo-900">
+                        <i data-lucide="calendar-plus" class="w-4 h-4"></i>
+                    </div>
+                    Add Ad-Hoc Plan
                 </h3>
-                <button id="closeAdhocModalBtn" class="text-slate-400 hover:text-slate-600">
+                <button id="closeAdhocModalBtn" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
 
             <form id="adhocForm" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-semibold text-slate-600 mb-1">Event / Plan Details</label>
-                    <input type="text" id="adhocTitle" placeholder="e.g. Dinner with friends / Travel day" class="w-full text-xs p-2.5 bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none" required>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1.5">Event / Plan Details</label>
+                    <input type="text" id="adhocTitle" placeholder="e.g. Dinner with friends / Travel day" class="w-full text-xs p-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none dark:text-white transition" required>
                 </div>
 
-                <div class="flex items-center justify-between p-3 bg-indigo-50/50 rounded-lg border border-indigo-100">
+                <div class="flex items-center justify-between p-3.5 bg-indigo-50/50 dark:bg-indigo-950/40 rounded-2xl border border-indigo-100 dark:border-indigo-900/60">
                     <div>
-                        <span class="text-xs font-bold text-indigo-950 block">Streak Freeze Protection</span>
-                        <span class="text-[10px] text-slate-500">Protect streak count even if daily routine items are missed.</span>
+                        <span class="text-xs font-bold text-indigo-950 dark:text-indigo-200 block">Streak Freeze Protection</span>
+                        <span class="text-[10px] text-slate-500 dark:text-slate-400">Protect streak count even if daily routine items are missed.</span>
                     </div>
-                    <input type="checkbox" id="streakFreezeCheck" class="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500" checked>
+                    <input type="checkbox" id="streakFreezeCheck" class="w-4 h-4 text-indigo-600 rounded focus:ring-indigo-500 cursor-pointer" checked>
                 </div>
 
-                <div class="flex justify-end gap-2 pt-2">
-                    <button type="button" id="cancelAdhocBtn" class="px-4 py-2 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg">Cancel</button>
-                    <button type="submit" class="px-4 py-2 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-lg">Save Event</button>
+                <div class="flex justify-end gap-2.5 pt-2">
+                    <button type="button" id="cancelAdhocBtn" class="px-4 py-2.5 text-xs font-semibold text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-xl transition">Cancel</button>
+                    <button type="submit" class="px-4 py-2.5 text-xs font-semibold text-white bg-indigo-600 hover:bg-indigo-700 rounded-xl transition shadow-sm">Save Event</button>
                 </div>
             </form>
         </div>
@@ -463,7 +512,6 @@
 
     <!-- JAVASCRIPT APPLICATION LOGIC -->
     <script>
-        // Helper to format Date object into YYYY-MM-DD using LOCAL time
         function formatDateLocal(d) {
             const year = d.getFullYear();
             const month = String(d.getMonth() + 1).padStart(2, '0');
@@ -471,7 +519,6 @@
             return `${year}-${month}-${day}`;
         }
 
-        // Helper to parse YYYY-MM-DD into a local Date object without UTC offset shift
         function parseDateLocal(dateStr) {
             const [y, m, d] = dateStr.split('-').map(Number);
             return new Date(y, m - 1, d);
@@ -485,12 +532,13 @@
             EXPENSES: 'ruchira_expenses_v2',
             HEALTH: 'ruchira_health_v2',
             REFLECTIONS: 'ruchira_reflections_v2',
-            ADHOC: 'ruchira_adhoc_v2'
+            ADHOC: 'ruchira_adhoc_v2',
+            THEME: 'ruchira_theme_v2'
         };
 
         let routineData = JSON.parse(localStorage.getItem(STORAGE_KEYS.ROUTINES)) || {};
         let studyLogs = JSON.parse(localStorage.getItem(STORAGE_KEYS.STUDY)) || [];
-        let expenseLogs = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXPENSES)) || [];
+        let expenseLogs = JSON.parse(localStorage.getItem(STORAGE_KEYS.EXPENSES)) || {};
         let healthData = JSON.parse(localStorage.getItem(STORAGE_KEYS.HEALTH)) || {};
         let reflectionLogs = JSON.parse(localStorage.getItem(STORAGE_KEYS.REFLECTIONS)) || {};
         let adhocEvents = JSON.parse(localStorage.getItem(STORAGE_KEYS.ADHOC)) || {};
@@ -550,7 +598,18 @@
         function saveReflections() { localStorage.setItem(STORAGE_KEYS.REFLECTIONS, JSON.stringify(reflectionLogs)); }
         function saveAdhoc() { localStorage.setItem(STORAGE_KEYS.ADHOC, JSON.stringify(adhocEvents)); }
 
+        // Theme Manager
+        function initTheme() {
+            const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME) || 'dark';
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
             lucide.createIcons();
             
             selectedDateStr = formatDateLocal(new Date());
@@ -563,13 +622,24 @@
             renderHealthData();
             renderReflectionData();
 
+            // Theme toggle listener
+            document.getElementById('themeToggleBtn').addEventListener('click', () => {
+                if (document.documentElement.classList.contains('dark')) {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem(STORAGE_KEYS.THEME, 'light');
+                } else {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem(STORAGE_KEYS.THEME, 'dark');
+                }
+            });
+
             document.querySelectorAll('.nav-tab').forEach(tab => {
                 tab.addEventListener('click', (e) => {
                     document.querySelectorAll('.nav-tab').forEach(t => {
-                        t.classList.remove('active', 'text-indigo-600', 'border-indigo-600');
-                        t.classList.add('text-slate-500', 'border-transparent');
+                        t.classList.remove('active', 'text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600', 'dark:border-indigo-400');
+                        t.classList.add('text-slate-500', 'dark:text-slate-400', 'border-transparent');
                     });
-                    tab.classList.add('active', 'text-indigo-600', 'border-indigo-600');
+                    tab.classList.add('active', 'text-indigo-600', 'dark:text-indigo-400', 'border-indigo-600', 'dark:border-indigo-400');
                     
                     const target = tab.dataset.target;
                     document.querySelectorAll('.tab-content').forEach(c => c.classList.add('hidden'));
@@ -649,10 +719,10 @@
                 const hasAdhoc = !!adhocEvents[dateIso];
 
                 const btn = document.createElement('button');
-                btn.className = `flex flex-col items-center justify-center p-2 rounded-lg min-w-[50px] transition text-xs ${
+                btn.className = `flex flex-col items-center justify-center p-2.5 rounded-xl min-w-[54px] transition text-xs shadow-sm ${
                     isSelected 
-                        ? 'bg-indigo-600 text-white font-bold shadow' 
-                        : 'bg-slate-800 text-slate-300 hover:bg-slate-700'
+                        ? 'bg-indigo-600 text-white font-bold shadow-indigo-500/20 shadow-md' 
+                        : 'bg-slate-800 dark:bg-slate-800/80 text-slate-300 hover:bg-slate-700'
                 }`;
                 btn.onclick = () => {
                     selectedDateStr = dateIso;
@@ -675,8 +745,10 @@
             const template = isWeekendDay ? WEEKEND_ROUTINE : WEEKDAY_ROUTINE;
             
             document.getElementById('dayTypeBadge').innerText = isWeekendDay ? 'Weekend' : 'Weekday';
-            document.getElementById('dayTypeBadge').className = `text-xs px-2.5 py-0.5 rounded-full font-semibold ${
-                isWeekendDay ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-700'
+            document.getElementById('dayTypeBadge').className = `text-xs px-3 py-1 rounded-full font-semibold ${
+                isWeekendDay 
+                    ? 'bg-amber-100 dark:bg-amber-950/80 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-900' 
+                    : 'bg-indigo-100 dark:bg-indigo-950/80 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800'
             }`;
 
             document.getElementById('routineDayTitle').innerText = parseDateLocal(selectedDateStr).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
@@ -697,17 +769,17 @@
             template.forEach(item => {
                 const isChecked = completedIds.includes(item.id);
                 const div = document.createElement('div');
-                div.className = `p-3.5 flex items-center justify-between hover:bg-slate-50 transition ${isChecked ? 'bg-indigo-50/30' : ''}`;
+                div.className = `p-4 flex items-center justify-between hover:bg-slate-50 dark:hover:bg-slate-800/50 transition ${isChecked ? 'bg-indigo-50/40 dark:bg-indigo-950/20' : ''}`;
                 
                 div.innerHTML = `
-                    <div class="flex items-start space-x-3">
+                    <div class="flex items-start space-x-3.5">
                         <input type="checkbox" data-id="${item.id}" ${isChecked ? 'checked' : ''} 
-                            class="task-check mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 focus:ring-indigo-500 cursor-pointer">
+                            class="task-check mt-1 w-4 h-4 text-indigo-600 rounded border-slate-300 dark:border-slate-700 focus:ring-indigo-500 cursor-pointer">
                         <div>
-                            <span class="text-xs font-semibold text-slate-800 ${isChecked ? 'line-through text-slate-400' : ''}">${item.title}</span>
-                            <div class="flex items-center space-x-2 mt-0.5">
-                                <span class="text-[10px] text-slate-400 font-mono">${item.time}</span>
-                                <span class="text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded font-medium">${item.cat}</span>
+                            <span class="text-xs font-semibold text-slate-800 dark:text-slate-200 ${isChecked ? 'line-through text-slate-400 dark:text-slate-500' : ''}">${item.title}</span>
+                            <div class="flex items-center space-x-2 mt-1">
+                                <span class="text-[10px] text-slate-400 dark:text-slate-400 font-mono">${item.time}</span>
+                                <span class="text-[9px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-300 px-2 py-0.5 rounded-md font-medium border border-slate-200 dark:border-slate-700">${item.cat}</span>
                             </div>
                         </div>
                     </div>
@@ -803,17 +875,17 @@
 
             studyLogs.forEach(log => {
                 const div = document.createElement('div');
-                div.className = 'p-3 bg-slate-50 border border-slate-200 rounded-lg flex items-start justify-between text-xs';
+                div.className = 'p-3.5 bg-slate-50 dark:bg-slate-800/60 border border-slate-200/80 dark:border-slate-800 rounded-xl flex items-start justify-between text-xs';
                 div.innerHTML = `
                     <div>
-                        <div class="flex items-center space-x-2 mb-1">
-                            <span class="font-bold text-slate-800">${log.category}</span>
-                            <span class="text-[10px] bg-indigo-100 text-indigo-700 font-semibold px-2 py-0.5 rounded">${log.minutes} mins</span>
+                        <div class="flex items-center space-x-2 mb-1.5">
+                            <span class="font-bold text-slate-800 dark:text-slate-200">${log.category}</span>
+                            <span class="text-[10px] bg-indigo-100 dark:bg-indigo-950 text-indigo-700 dark:text-indigo-300 font-semibold px-2 py-0.5 rounded-md border border-indigo-200 dark:border-indigo-900">${log.minutes} mins</span>
                         </div>
-                        <p class="text-slate-600">${log.topic}</p>
-                        <span class="text-[10px] text-slate-400 mt-1 block">${log.date}</span>
+                        <p class="text-slate-600 dark:text-slate-300">${log.topic}</p>
+                        <span class="text-[10px] text-slate-400 mt-1.5 block">${log.date}</span>
                     </div>
-                    <button onclick="deleteStudyLog('${log.id}')" class="text-slate-400 hover:text-red-500 p-1">
+                    <button onclick="deleteStudyLog('${log.id}')" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition">
                         <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                     </button>
                 `;
@@ -862,14 +934,14 @@
                 }
 
                 const tr = document.createElement('tr');
-                tr.className = 'hover:bg-slate-50 border-b border-slate-100';
+                tr.className = 'hover:bg-slate-50 dark:hover:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800/60 transition';
                 tr.innerHTML = `
-                    <td class="px-4 py-2 font-mono text-[11px] text-slate-500">${exp.date}</td>
-                    <td class="px-4 py-2 font-medium text-slate-800">${exp.description}</td>
-                    <td class="px-4 py-2 text-slate-500">${exp.category}</td>
-                    <td class="px-4 py-2 text-right font-bold text-slate-800">₹${exp.amount.toFixed(2)}</td>
-                    <td class="px-4 py-2 text-center">
-                        <button onclick="deleteExpense('${exp.id}')" class="text-slate-400 hover:text-red-500">
+                    <td class="px-4 py-3 font-mono text-[11px] text-slate-500 dark:text-slate-400">${exp.date}</td>
+                    <td class="px-4 py-3 font-medium text-slate-800 dark:text-slate-200">${exp.description}</td>
+                    <td class="px-4 py-3 text-slate-500 dark:text-slate-400">${exp.category}</td>
+                    <td class="px-4 py-3 text-right font-bold text-slate-800 dark:text-slate-100">₹${exp.amount.toFixed(2)}</td>
+                    <td class="px-4 py-3 text-center">
+                        <button onclick="deleteExpense('${exp.id}')" class="text-slate-400 hover:text-red-500 p-1.5 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700 transition">
                             <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                         </button>
                     </td>
@@ -958,8 +1030,8 @@
             } else {
                 datesWithWeight.forEach(d => {
                     const item = document.createElement('div');
-                    item.className = 'flex justify-between items-center bg-slate-50 p-2 rounded border border-slate-100';
-                    item.innerHTML = `<span class="font-mono text-slate-500">${d}</span><span class="font-bold text-indigo-600">${healthData[d].weight} kg</span>`;
+                    item.className = 'flex justify-between items-center bg-slate-50 dark:bg-slate-800/60 p-2.5 rounded-xl border border-slate-200/80 dark:border-slate-800';
+                    item.innerHTML = `<span class="font-mono text-slate-500 dark:text-slate-400">${d}</span><span class="font-bold text-indigo-600 dark:text-indigo-400">${healthData[d].weight} kg</span>`;
                     weightList.appendChild(item);
                 });
             }
@@ -974,8 +1046,8 @@
                 datesWithPeriod.forEach(d => {
                     const p = healthData[d].period;
                     const item = document.createElement('div');
-                    item.className = 'bg-rose-50 border border-rose-100 p-2 rounded text-slate-700';
-                    item.innerHTML = `<div class="flex justify-between font-bold text-rose-800"><span>${p.status}</span><span class="font-mono text-[10px] text-slate-400">${d}</span></div><p class="text-[11px] text-slate-600">${p.notes || ''}</p>`;
+                    item.className = 'bg-rose-50 dark:bg-rose-950/40 border border-rose-100 dark:border-rose-900/60 p-2.5 rounded-xl text-slate-700 dark:text-slate-300';
+                    item.innerHTML = `<div class="flex justify-between font-bold text-rose-800 dark:text-rose-300 mb-1"><span>${p.status}</span><span class="font-mono text-[10px] text-slate-400 dark:text-slate-400">${d}</span></div><p class="text-[11px] text-slate-600 dark:text-slate-400">${p.notes || ''}</p>`;
                     periodList.appendChild(item);
                 });
             }
