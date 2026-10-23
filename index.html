@@ -463,7 +463,21 @@
 
     <!-- JAVASCRIPT APPLICATION LOGIC -->
     <script>
-        let selectedDateStr = new Date().toISOString().split('T')[0];
+        // Helper to format Date object into YYYY-MM-DD using LOCAL time
+        function formatDateLocal(d) {
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Helper to parse YYYY-MM-DD into a local Date object without UTC offset shift
+        function parseDateLocal(dateStr) {
+            const [y, m, d] = dateStr.split('-').map(Number);
+            return new Date(y, m - 1, d);
+        }
+
+        let selectedDateStr = formatDateLocal(new Date());
 
         const STORAGE_KEYS = {
             ROUTINES: 'ruchira_routines_v2',
@@ -525,7 +539,7 @@
         ];
 
         function isWeekend(dateStr) {
-            const day = new Date(dateStr + 'T00:00:00').getDay();
+            const day = parseDateLocal(dateStr).getDay();
             return day === 0 || day === 6;
         }
 
@@ -539,9 +553,8 @@
         document.addEventListener('DOMContentLoaded', () => {
             lucide.createIcons();
             
-            const todayStr = new Date().toISOString().split('T')[0];
-            selectedDateStr = todayStr;
-            document.getElementById('topDatePicker').value = todayStr;
+            selectedDateStr = formatDateLocal(new Date());
+            document.getElementById('topDatePicker').value = selectedDateStr;
 
             renderTopCalendarStrip();
             renderCurrentDateView();
@@ -573,7 +586,7 @@
             });
 
             document.getElementById('todayBtn').addEventListener('click', () => {
-                selectedDateStr = new Date().toISOString().split('T')[0];
+                selectedDateStr = formatDateLocal(new Date());
                 document.getElementById('topDatePicker').value = selectedDateStr;
                 renderTopCalendarStrip();
                 renderCurrentDateView();
@@ -612,9 +625,9 @@
         });
 
         function changeDateByDays(days) {
-            const d = new Date(selectedDateStr + 'T00:00:00');
+            const d = parseDateLocal(selectedDateStr);
             d.setDate(d.getDate() + days);
-            selectedDateStr = d.toISOString().split('T')[0];
+            selectedDateStr = formatDateLocal(d);
             document.getElementById('topDatePicker').value = selectedDateStr;
             renderTopCalendarStrip();
             renderCurrentDateView();
@@ -624,11 +637,10 @@
             const strip = document.getElementById('calendarStrip');
             strip.innerHTML = '';
 
-            const current = new Date(selectedDateStr + 'T00:00:00');
+            const current = parseDateLocal(selectedDateStr);
             for (let i = -3; i <= 3; i++) {
-                const dayDate = new Date(current);
-                dayDate.setDate(dayDate.getDate() + i);
-                const dateIso = dayDate.toISOString().split('T')[0];
+                const dayDate = new Date(current.getFullYear(), current.getMonth(), current.getDate() + i);
+                const dateIso = formatDateLocal(dayDate);
                 
                 const dayName = dayDate.toLocaleDateString('en-US', { weekday: 'short' });
                 const dayNum = dayDate.getDate();
@@ -667,7 +679,7 @@
                 isWeekendDay ? 'bg-amber-100 text-amber-800' : 'bg-indigo-100 text-indigo-700'
             }`;
 
-            document.getElementById('routineDayTitle').innerText = new Date(selectedDateStr + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+            document.getElementById('routineDayTitle').innerText = parseDateLocal(selectedDateStr).toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
 
             const adhoc = adhocEvents[selectedDateStr];
             if (adhoc) {
@@ -738,7 +750,7 @@
             let checkDate = new Date();
             
             while (true) {
-                const dateStr = checkDate.toISOString().split('T')[0];
+                const dateStr = formatDateLocal(checkDate);
                 const completed = routineData[dateStr] || [];
                 const adhoc = adhocEvents[dateStr];
                 const totalTasks = isWeekend(dateStr) ? WEEKEND_ROUTINE.length : WEEKDAY_ROUTINE.length;
@@ -746,7 +758,7 @@
                 if (completed.length >= Math.floor(totalTasks * 0.7) || (adhoc && adhoc.streakFreeze)) {
                     streak++;
                     checkDate.setDate(checkDate.getDate() - 1);
-                } else if (dateStr === new Date().toISOString().split('T')[0]) {
+                } else if (dateStr === formatDateLocal(new Date())) {
                     checkDate.setDate(checkDate.getDate() - 1);
                 } else {
                     break;
